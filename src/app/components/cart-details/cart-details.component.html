@@ -3,12 +3,14 @@
     <div class="container-fluid">
       <div *ngIf="cartItems.length > 0">
         <table class="table table-bordered">
+          <!--table headers-->
           <tr>
             <th width="20%">Product Image</th>
             <th width="50%">Product Detail</th>
             <th width="30%"></th>
           </tr>
           <tr *ngFor="let tempCartItem of cartItems">
+            <!-- start product image and detail-->
             <td>
               <img
                 src="{{ tempCartItem.imageUrl }}"
@@ -20,9 +22,32 @@
               <p>{{ tempCartItem.name }}</p>
               <p>{{ tempCartItem.unitPrice | currency: "USD" }}</p>
             </td>
+            <!--end product image and detail-->
+            <!--start subtotal and plus minus buttons-->
             <td>
               <div class="items">
-                <label>Quantity:</label> {{ tempCartItem.quantity }}
+                <label>Quantity:</label>
+                <div class="row no-gutters">
+                  <!--plus button-->
+                  <div class="col">
+                    <button
+                      (click)="incrementQuantity(tempCartItem)"
+                      class="btn btn-primary btn-sm"
+                    >
+                      <i class="fa fa-plus"></i>
+                    </button>
+                  </div>
+                  <div class="col ms-4 me-2">
+                    {{ tempCartItem.quantity }}
+                  </div>
+                  <!--minus button-->
+                  <div class="col">
+                    <button class="btn btn-primary btn-sm">
+                      <i class="fa fa-minus"></i>
+                    </button>
+                  </div>
+                  <div class="col-8"></div>
+                </div>
               </div>
               <p class="mt-2">
                 Subtotal:
@@ -32,7 +57,9 @@
                 }}
               </p>
             </td>
+            <!--end subtotal and plus minus buttons-->
           </tr>
+          <!--total price and quantity cart-->
           <tr>
             <td colspan="2"></td>
             <td style="font-weight: bold">

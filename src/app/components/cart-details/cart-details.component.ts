@@ -30,4 +30,8 @@ export class CartDetailsComponent implements OnInit {
     //compute cart total price and quantity
     this.cartService.computeCartTotals();
   }
+  //increment method for the plus button
+  incrementQuantity(theCartItem: CartItem) {
+    this.cartService.addToCart(theCartItem);
+  }
 }

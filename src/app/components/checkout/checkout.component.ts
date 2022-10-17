@@ -82,6 +82,14 @@ export class CheckoutComponent implements OnInit {
       'The email address is ' +
         this.checkoutFormGroup?.get('customer')?.value.email
     );
+    console.log(
+      'The shipping addres country is ' +
+        this.checkoutFormGroup?.get('shippingAddress')?.value.country.name
+    );
+    console.log(
+      'The shipping address state is ' +
+        this.checkoutFormGroup?.get('shippingAddress')?.value.state.name
+    );
   }
   // checkbox to copy billing to shipping
   copyShippingAddressToBillingAddress(e: any) {
@@ -89,8 +97,10 @@ export class CheckoutComponent implements OnInit {
       this.checkoutFormGroup?.controls['billingAddress'].setValue(
         this.checkoutFormGroup?.controls['shippingAddress'].value
       );
+      this.billingAddressStates = this.shippingAddressStates;
     } else {
       this.checkoutFormGroup?.controls['billingAddress'].reset();
+      this.billingAddressStates = [];
     }
   }
   // start the month appropriately in the credit card form

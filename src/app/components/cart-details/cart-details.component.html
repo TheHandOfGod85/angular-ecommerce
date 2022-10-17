@@ -42,7 +42,10 @@
                   </div>
                   <!--minus button-->
                   <div class="col">
-                    <button class="btn btn-primary btn-sm">
+                    <button
+                      (click)="decremetnQuantity(tempCartItem)"
+                      class="btn btn-primary btn-sm"
+                    >
                       <i class="fa fa-minus"></i>
                     </button>
                   </div>

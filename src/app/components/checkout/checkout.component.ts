@@ -1,6 +1,8 @@
+import { Country } from './../../common/country';
 import { Luv2ShopFormService } from './../../services/luv2-shop-form.service';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { State } from 'src/app/common/state';
 
 @Component({
   selector: 'app-checkout',
@@ -13,6 +15,9 @@ export class CheckoutComponent implements OnInit {
   totalQuantity: number = 0;
   creditCardYears: number[] = [];
   creditCardMonths: number[] = [];
+  countries: Country[] = [];
+  shippingAddressStates: State[] = [];
+  billingAddressStates: State[] = [];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -63,6 +68,11 @@ export class CheckoutComponent implements OnInit {
       console.log('Retrieved credit card years: ' + JSON.stringify(data));
       this.creditCardYears = data;
     });
+    // populate the countries
+    this.luv2ShopFormService.getCountries().subscribe((data) => {
+      console.log('retrieved countries: ' + JSON.stringify(data));
+      this.countries = data;
+    });
   }
   // on submit of the form for checkout
   onSubmit() {
@@ -82,5 +92,42 @@ export class CheckoutComponent implements OnInit {
     } else {
       this.checkoutFormGroup?.controls['billingAddress'].reset();
     }
+  }
+  // start the month appropriately in the credit card form
+  handleMonthsAndYears() {
+    const creditCardFormGroup = this.checkoutFormGroup?.get('creditCard');
+    const curretnYear = new Date().getFullYear();
+    const selectedyear = Number(creditCardFormGroup?.value['expirationYear']);
+    // if the current year equals the selected year , then start with the current month
+    let startMonth: number;
+    if (curretnYear === selectedyear) {
+      startMonth = new Date().getMonth() + 1;
+    } else {
+      startMonth = 1;
+    }
+    this.luv2ShopFormService
+      .getCreditCardMonths(startMonth)
+      .subscribe((data) => {
+        console.log('Retrieved credit card months: ' + JSON.stringify(data));
+        this.creditCardMonths = data;
+      });
+  }
+  // get the states with the option of passing billingAddress or shippingAddress
+  getStates(formGroupName: string) {
+    const formGroup = this.checkoutFormGroup?.get(formGroupName);
+    const countryCode = formGroup?.value['country'].code;
+    // this is just for degugging but is not required for code
+    const countryName = formGroup?.value['country'].name;
+    console.log(`${formGroupName} country code: ${countryCode}`);
+    console.log(`${formGroupName} country name: ${countryName}`);
+    this.luv2ShopFormService.getStates(countryCode).subscribe((data) => {
+      if (formGroupName === 'shippingAddress') {
+        this.shippingAddressStates = data;
+      } else {
+        this.billingAddressStates = data;
+      }
+      // select the first item by default
+      formGroup?.get('state')?.setValue(data[0]);
+    });
   }
 }

@@ -49,18 +49,42 @@ export class CheckoutComponent implements OnInit {
         ]),
       }),
       shippingAddress: this.formBuilder.group({
-        street: [''],
-        city: [''],
-        state: [''],
-        country: [''],
-        zipCode: [''],
+        street: new FormControl('', [
+          Validators.required,
+          Validators.minLength(2),
+          Luv2ShopValidators.notOnlyWhitespace,
+        ]),
+        city: new FormControl('', [
+          Validators.required,
+          Validators.minLength(2),
+          Luv2ShopValidators.notOnlyWhitespace,
+        ]),
+        state: new FormControl('', [Validators.required]),
+        country: new FormControl('', [Validators.required]),
+        zipCode: new FormControl('', [
+          Validators.required,
+          Validators.minLength(2),
+          Luv2ShopValidators.notOnlyWhitespace,
+        ]),
       }),
       billingAddress: this.formBuilder.group({
-        street: [''],
-        city: [''],
-        state: [''],
-        country: [''],
-        zipCode: [''],
+        street: new FormControl('', [
+          Validators.required,
+          Validators.minLength(2),
+          Luv2ShopValidators.notOnlyWhitespace,
+        ]),
+        city: new FormControl('', [
+          Validators.required,
+          Validators.minLength(2),
+          Luv2ShopValidators.notOnlyWhitespace,
+        ]),
+        state: new FormControl('', [Validators.required]),
+        country: new FormControl('', [Validators.required]),
+        zipCode: new FormControl('', [
+          Validators.required,
+          Validators.minLength(2),
+          Luv2ShopValidators.notOnlyWhitespace,
+        ]),
       }),
       creditCard: this.formBuilder.group({
         cardType: [''],
@@ -171,5 +195,47 @@ export class CheckoutComponent implements OnInit {
   // getter for email
   get email() {
     return this.checkoutFormGroup?.get('customer.email');
+  }
+  //////////////////////////////////////SHIPPING///////////////////////////////////////////
+  // getter for shippingAddressStreet
+  get shippingAddressStreet() {
+    return this.checkoutFormGroup?.get('shippingAddress.street');
+  }
+  // getter for shippingAddressCity
+  get shippingAddressCity() {
+    return this.checkoutFormGroup?.get('shippingAddress.city');
+  }
+  // getter for shippingAddressState
+  get shippingAddressState() {
+    return this.checkoutFormGroup?.get('shippingAddress.state');
+  }
+  // getter for shippingAddressZipCode
+  get shippingAddressZipCode() {
+    return this.checkoutFormGroup?.get('shippingAddress.zipCode');
+  }
+  // getter for shippingAddressCountry
+  get shippingAddressCountry() {
+    return this.checkoutFormGroup?.get('shippingAddress.country');
+  }
+  //////////////////////////////////////BILLING///////////////////////////////////////////////////////
+  // getter for billingAddressStreet
+  get billingAddressStreet() {
+    return this.checkoutFormGroup?.get('billingAddress.street');
+  }
+  // getter for billingAddressCity
+  get billingAddressCity() {
+    return this.checkoutFormGroup?.get('billingAddress.city');
+  }
+  // getter for billingAddressState
+  get billingAddressState() {
+    return this.checkoutFormGroup?.get('billingAddress.state');
+  }
+  // getter for billingAddressZipCode
+  get billingAddressZipCode() {
+    return this.checkoutFormGroup?.get('billingAddress.zipCode');
+  }
+  // getter for billingAddressCountry
+  get billingAddressCountry() {
+    return this.checkoutFormGroup?.get('billingAddress.country');
   }
 }

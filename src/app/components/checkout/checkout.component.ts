@@ -1,3 +1,4 @@
+import { CartService } from './../../services/cart.service';
 import { Country } from './../../common/country';
 import { Luv2ShopFormService } from './../../services/luv2-shop-form.service';
 import { Component, OnInit } from '@angular/core';
@@ -27,10 +28,12 @@ export class CheckoutComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private luv2ShopFormService: Luv2ShopFormService
+    private luv2ShopFormService: Luv2ShopFormService,
+    private cartService: CartService
   ) {}
 
   ngOnInit(): void {
+    this.reviewCartDetails();
     this.checkoutFormGroup = this.formBuilder.group({
       customer: this.formBuilder.group({
         firstName: new FormControl('', [
@@ -124,6 +127,15 @@ export class CheckoutComponent implements OnInit {
       console.log('retrieved countries: ' + JSON.stringify(data));
       this.countries = data;
     });
+  }
+  // this method will subscribe to the subjects of cart service
+  reviewCartDetails() {
+    //subscribe to cartService.totalQuantity
+    this.cartService.totalQuantity.subscribe(
+      (data) => (this.totalQuantity = data)
+    );
+    //subscribe to cartService.totalPrice
+    this.cartService.totalPrice.subscribe((data) => (this.totalPrice = data));
   }
   // on submit of the form for checkout
   onSubmit() {
